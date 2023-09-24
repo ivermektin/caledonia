@@ -330,7 +330,7 @@ public class launcherWindow extends javax.swing.JFrame {
             if(!response.isSuccessful()){
                 Integer code = response.code();
                 String responseMessage = response.message();
-                errors.add("[WARN] OpenAI returned error code " + code + ": " + responseMessage + " This will be displayed when a report is made if not addressed.");
+                errors.add("[WARN] OpenAI returned error code " + code + ". This will be displayed when a report is made if not addressed.");
             }
         } else errors.add("[CRITICAL] Missing file apikey.txt. Program will crash when a request to generate a report is made.");
         return errors;
