@@ -1,25 +1,30 @@
-<h1 align="center" id="title">Caledonia</h1>
 
-<p id="description">Caledonia is an open-source Java-based tool that allows students (and really anyone) to take notes on any given subject and get AI-powered insights into their note-taking allowing users to study more efficiently than ever before.</p>
+# caledonia
+Caledonia is a Java-based open-source tool designed to allow end users to
+aggregate their notes and then interrogate them for insights using the power of
+OpenAI’s GPT model.
+![UI Preview with themes Purple, Light Orange, and Dark](https://raw.githubusercontent.com/ivermektin/caledonia/main/PreviewImage.png)
+## Features
+**Seamless Management**<br>
+Quickly create new subjects and organize your notes with our intuitive and user-
+friendly interface.
 
-  
-  
-<h2>Features</h2>
+**Prompt-Based Insights**<br>
+Effortlessly ask anything about your notes, and select which notes to include in
+the AI’s context.
 
-*   Manage Multiple Subjects and Disciplines with Ease
-*   Prompt-Based Insights - Ask the computer questions about your notes!
-*   Multiple Themes (With more to come!)
+**Multiple Themes (With more to come!)**<br>
+Choose from Light mode and Dark mode, with an option for an Orange accent or
+a completely dierent ‘Purple’ theme.
 
-<h2>Installation Steps:</h2>
 
-<p>1. Install caledonia.zip from the releases section.</p>
+## Requirements
 
-<p>2. Extract to the desired folder.</p>
+JDK 11 or Greater<br>
+An OpenAI API key. You can read more about getting your key [here](https://help.openai.com/en/articles/4936850-where-do-i-find-my-secret-api-key).
 
-<p>3. Open apikey.txt and replace it with your OpenAI API key. You can read (https://help.openai.com/en/articles/4936850-where-do-i-find-my-secret-api-key) to learn how to get your API key.</p>
+## Feedback
 
-<p>4. Make sure to delete the DELETEME.txt file in data/.</p>
+Feedback is always appreciated! Feel free to contact me at
+ivermektin@mail.com or on Discord at ``ivermektin``. 
 
-<h2>💖Like my work?</h2>
-
-Feel free to contact me at ivermektin@mail.com or @ivermektin on Discord.
