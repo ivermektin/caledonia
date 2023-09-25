@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 public class mainWindow extends javax.swing.JFrame {
 
     public static void main(String[] args) {
-        if(args.length > 0){
+        if(args.length > 1){
             int themeValue = Integer.parseInt(args[0]);
             if(themeValue == 0) FlatArcIJTheme.setup();
             if(themeValue == 1) FlatArcDarkIJTheme.setup();
