@@ -47,14 +47,14 @@ public class aiInterface {
      * @throws IOException if an error occurs during the extraction of the content
      */
     public static String getContent(Response response) throws IOException {
+        String responseTXT = response.body().string();
+        Gson JSONParser = new Gson();
+        JsonObject responseJsonObject = new Gson().fromJson(responseTXT, JsonObject.class);
         if(response.isSuccessful()){
-            String responseTXT = response.body().string();
-            Gson JSONParser = new Gson();
-            JsonObject responseJsonObject = new Gson().fromJson(responseTXT, JsonObject.class);
             String content = responseJsonObject.get("choices").getAsJsonArray().get(0).getAsJsonObject().get("message").getAsJsonObject().get("content").getAsString();
             return content;
         } else {
-            return "Error " + response.code() + ": " + response.message();
+            return "Error " + response.code() + ": " + responseJsonObject.get("error").getAsJsonObject().get("message").getAsString();
         }
     }
 
