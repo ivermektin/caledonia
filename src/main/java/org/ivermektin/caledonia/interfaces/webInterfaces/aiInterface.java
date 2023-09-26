@@ -54,7 +54,18 @@ public class aiInterface {
             String content = responseJsonObject.get("choices").getAsJsonArray().get(0).getAsJsonObject().get("message").getAsJsonObject().get("content").getAsString();
             return content;
         } else {
-            return "Error " + response.code() + ": " + responseJsonObject.get("error").getAsJsonObject().get("message").getAsString();
+            switch(response.code()) {
+                case 401:
+                    return "Error 401: Check if your API key is valid.";
+                case 429:
+                    return "Error 429: You are being ratelimited. Wait 30 seconds.";
+                case 500:
+                    return "Error 500: OpenAI is currently having server trouble. Wait 30 seconds.";
+                case 503:
+                    return "Error 503: OpenAI is currently overloaded. Please try again later.";
+                default:
+                    return "Error " + response.code() + ": " + responseJsonObject.get("error").getAsJsonObject().get("message").getAsString();
+            }
         }
     }
 
