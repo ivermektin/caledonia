@@ -2,8 +2,10 @@ package org.ivermektin.caledonia.interfaces.domesticInterfaces.objects;
 
 import com.google.gson.Gson;
 import org.ivermektin.caledonia.interfaces.systemInterfaces.filesystemInterface;
+import org.ivermektin.caledonia.userinterface.launcher.launcherWindow;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 /**
@@ -17,6 +19,7 @@ public class subject {
     String id;
     ArrayList<data> notes;
     ArrayList<data> reports;
+
 
     /**
      * Constructs a subject object with the given name, ID, notes, and reports.
@@ -89,7 +92,6 @@ public class subject {
         new File(ntfp).delete();
         new File(rpfp).delete();
         new File(filepath).delete();
-        System.out.println("del");
     }
 
     /**

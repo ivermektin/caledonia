@@ -6,10 +6,12 @@ import org.ivermektin.caledonia.interfaces.domesticInterfaces.objects.subject;
 import org.ivermektin.caledonia.userinterface.windows.control.windowController;
 import org.ivermektin.caledonia.userinterface.windows.mainWindow;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class newReportWindow extends javax.swing.JDialog {
     public static void main() {
@@ -92,11 +94,7 @@ public class newReportWindow extends javax.swing.JDialog {
         createReportButton.setText("Create Report");
         createReportButton.addActionListener( new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt){
-                try {
-                    createReportButtonActionPerformed(evt);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                createReportButtonActionPerformed(evt);
             }
         });
         checkStatus();
@@ -143,21 +141,37 @@ public class newReportWindow extends javax.swing.JDialog {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="UI Handler Code">
-    private void createReportButtonActionPerformed(java.awt.event.ActionEvent evt) throws IOException {
+    private void createReportButtonActionPerformed(java.awt.event.ActionEvent evt) {
         createReportButton.setText("Loading...");
-        ArrayList<data> dataToSend = new ArrayList<data>();
-        for (Integer indice: notesList.getSelectedIndices()) {
-            dataToSend.add(windowController.getCurrentSubject().getNotes().get(indice));
-        }
-        subject subject = windowController.getCurrentSubject();
-        subject.addReport(aiInterface.generateReport(promptField.getText(),dataToSend, windowController.getCurrentSubject().getName()));
-        super.dispose();
-        String[] args = {""};
-        for (Window window: mainWindow.getWindows()){
-            window.dispose();
-        }
-        mainWindow.main(args);
+        createReportButton.setEnabled(false);
+
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                ArrayList<data> dataToSend = new ArrayList<data>();
+                for (Integer indice: notesList.getSelectedIndices()) {
+                    dataToSend.add(windowController.getCurrentSubject().getNotes().get(indice));
+                }
+                subject subject = windowController.getCurrentSubject();
+                subject.addReport(aiInterface.generateReport(promptField.getText(), dataToSend, windowController.getCurrentSubject().getName()));
+
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                newReportWindow.super.dispose();
+                String[] args = {""};
+                for (Window window: mainWindow.getWindows()){
+                    window.dispose();
+                }
+                mainWindow.main(args);
+            }
+        };
+
+        worker.execute();
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="UI Element Declarations">
@@ -188,8 +202,8 @@ public class newReportWindow extends javax.swing.JDialog {
         }
 
         boolean igtw = isGoodTokenwise(promptField.getText(), dataToSend);
-        isEnabled = igtw;
         if(!igtw){
+            isEnabled = false;
             message = "The sum of your content has reached the token limit (1700). Shorten your prompt or remove notes to proceed.";
         }
         createReportButton.setEnabled(isEnabled);

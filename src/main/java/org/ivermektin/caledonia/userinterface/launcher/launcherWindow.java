@@ -14,6 +14,7 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -26,13 +27,13 @@ public class launcherWindow extends javax.swing.JFrame {
             public void run() {
                 try {
                     new launcherWindow().setVisible(true);
-                } catch (IOException e) {
+                } catch (IOException | URISyntaxException e) {
                     throw new RuntimeException(e);
                 }
             }
         });
     }
-    public launcherWindow() throws IOException {
+    public launcherWindow() throws IOException, URISyntaxException {
         this.setTitle("Caledonia 1.0.0 Launcher");
         initComponents();
     }
@@ -43,7 +44,7 @@ public class launcherWindow extends javax.swing.JFrame {
      */
 
     // <editor-fold defaultstate="collapsed" desc="User Interface Code">
-    private void initComponents() throws IOException {
+    private void initComponents() throws IOException, URISyntaxException {
         setResizable(false);
 
         CaledoniaLabel = new javax.swing.JLabel();
@@ -78,7 +79,7 @@ public class launcherWindow extends javax.swing.JFrame {
             public void mouseClicked(MouseEvent e) {
                 try {
                     updateNoticeList();
-                } catch (IOException ex) {
+                } catch (IOException | URISyntaxException ex) {
                     throw new RuntimeException(ex);
                 }
                 updateButtons();
@@ -88,7 +89,7 @@ public class launcherWindow extends javax.swing.JFrame {
             public void mousePressed(MouseEvent e) {
                 try {
                     updateNoticeList();
-                } catch (IOException ex) {
+                } catch (IOException | URISyntaxException ex) {
                     throw new RuntimeException(ex);
                 }
                 updateButtons();
@@ -98,7 +99,7 @@ public class launcherWindow extends javax.swing.JFrame {
             public void mouseReleased(MouseEvent e) {
                 try {
                     updateNoticeList();
-                } catch (IOException ex) {
+                } catch (IOException | URISyntaxException ex) {
                     throw new RuntimeException(ex);
                 }
                 updateButtons();
@@ -294,7 +295,7 @@ public class launcherWindow extends javax.swing.JFrame {
         }
     }
 
-    public static String[] findErrors() throws IOException {
+    public static String[] findErrors() throws IOException, URISyntaxException {
         ArrayList<String> errors = new ArrayList<String>();
 
         File data = new File("data/");
@@ -336,7 +337,7 @@ public class launcherWindow extends javax.swing.JFrame {
         return errors;
     }
 
-    public static void updateNoticeList() throws IOException {
+    public static void updateNoticeList() throws IOException, URISyntaxException {
         noticeList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = findErrors();
             public int getSize() { return strings.length; }

@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import org.ivermektin.caledonia.interfaces.systemInterfaces.filesystemInterface;
 import org.ivermektin.caledonia.interfaces.domesticInterfaces.objects.data;
 import org.ivermektin.caledonia.interfaces.domesticInterfaces.objects.subject;
+import org.ivermektin.caledonia.userinterface.launcher.launcherWindow;
 import org.ivermektin.caledonia.userinterface.windows.control.windowController;
 import org.ivermektin.caledonia.userinterface.windows.dataWindows.newReportWindow;
 import org.ivermektin.caledonia.userinterface.windows.subjectWindows.createSubjectWindow;
@@ -19,6 +20,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -90,7 +92,7 @@ public class mainWindow extends javax.swing.JFrame {
         viewerWindowLabel = new javax.swing.JLabel();
         exportButton = new javax.swing.JButton();
         createSubjectButton = new javax.swing.JButton();
-        assignmentManagerButton = new javax.swing.JButton();
+        taskManagerButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -348,10 +350,10 @@ public class mainWindow extends javax.swing.JFrame {
         createSubjectButton.setFont(new java.awt.Font("Bahnschrift", Font.PLAIN, 12)); // NOI18N
         createSubjectButton.setText("Create Subject");
 
-        assignmentManagerButton.setFont(new java.awt.Font("Bahnschrift", Font.PLAIN, 12)); // NOI18N
-        assignmentManagerButton.setText("Manage Assignments");
-        assignmentManagerButton.setToolTipText("Coming soon!");
-        assignmentManagerButton.setEnabled(false);
+        taskManagerButton.setFont(new java.awt.Font("Bahnschrift", Font.PLAIN, 12)); // NOI18N
+        taskManagerButton.setText("Manage Tasks");
+        taskManagerButton.setToolTipText("Coming soon!");
+        taskManagerButton.setEnabled(false);
 
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -365,7 +367,7 @@ public class mainWindow extends javax.swing.JFrame {
                                         .addComponent(subjectsListScrollPane)
                                         .addComponent(subjectsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(createSubjectButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(assignmentManagerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(taskManagerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addComponent(subjectInfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addContainerGap())
@@ -385,7 +387,7 @@ public class mainWindow extends javax.swing.JFrame {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(createSubjectButton)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(assignmentManagerButton)))
+                                                .addComponent(taskManagerButton)))
                                 .addContainerGap())
         );
 
@@ -525,10 +527,10 @@ public class mainWindow extends javax.swing.JFrame {
             }
         });
 
-        // Listener for assignment manager button
-        assignmentManagerButton.addActionListener(new java.awt.event.ActionListener() {
+        // Listener for task manager button
+        taskManagerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                assignmentManagerButtonActionPerformed(evt);
+                taskManagerButtonActionPerformed(evt);
             }
         });
 
@@ -556,13 +558,7 @@ public class mainWindow extends javax.swing.JFrame {
      */
     private void deleteSubjectButtonActionPerformed(java.awt.event.ActionEvent evt) throws InterruptedException {
         subjects.remove(windowController.getCurrentSubject());
-        String fp = "data/" + windowController.getCurrentSubject().getId();
         windowController.getCurrentSubject().delete();
-
-        // Wait until the file is deleted
-        while(new File(fp).exists()){
-            TimeUnit.MILLISECONDS.wait(500);
-        }
 
         if(!subjects.isEmpty()){
             windowController.setCurrentSubject(subjects.get(0));
@@ -580,11 +576,11 @@ public class mainWindow extends javax.swing.JFrame {
     }
 
     /**
-     * Handler for the assignment manager button. FIXME not in service.
+     * Handler for the task manager button. FIXME not in service.
      *
      * @param evt the ActionEvent object
      */
-    private void assignmentManagerButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void taskManagerButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // FIXME not in service.
     }
 
@@ -676,7 +672,7 @@ public class mainWindow extends javax.swing.JFrame {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="UI Element Declarations">
-    private javax.swing.JButton assignmentManagerButton;
+    private javax.swing.JButton taskManagerButton;
     private javax.swing.JLabel caledoniaLabel;
     private javax.swing.JButton createSubjectButton;
     private javax.swing.JButton deleteSubjectButton;

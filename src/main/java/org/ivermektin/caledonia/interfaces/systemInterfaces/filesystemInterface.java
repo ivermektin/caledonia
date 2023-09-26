@@ -22,7 +22,8 @@ public class filesystemInterface {
             BufferedReader file = new BufferedReader(new FileReader(filepath));
             while (file.ready()) {
                 temp.add(file.readLine());
-            }//end while
+            }
+            file.close();
         } catch (
                 IOException e) {
             System.out.println(e);
