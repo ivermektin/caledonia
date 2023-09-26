@@ -20,8 +20,12 @@ a completely dierent ‘Purple’ theme.
 
 ## Requirements
 
-JDK 11 or Greater<br>
+JDK 17<br>
 An OpenAI API key. You can read more about getting your key [here](https://help.openai.com/en/articles/4936850-where-do-i-find-my-secret-api-key).
+
+## Issues
+
+Working Directory Mismatch on macOS - [**Fix**](https://github.com/ivermektin/caledonia/issues/2#issuecomment-1736093737)
 
 ## Feedback
 
