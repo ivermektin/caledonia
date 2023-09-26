@@ -1,9 +1,7 @@
 
-# caledonia
-Caledonia is a Java-based open-source tool designed to allow end users to
+![Caledonia - Caledonia is a Java-based open-source tool designed to allow end users to
 aggregate their notes and then interrogate them for insights using the power of
-OpenAI’s GPT model.
-![UI Preview with themes Purple, Light Orange, and Dark](https://raw.githubusercontent.com/ivermektin/caledonia/main/PreviewImage.png)
+OpenAI’s GPT model. Contains UI Preview with themes Purple, Light Orange, and Dark](https://raw.githubusercontent.com/ivermektin/caledonia/main/Caledonia_PreviewPage.png)
 ## Features
 **Seamless Management**<br>
 Quickly create new subjects and organize your notes with our intuitive and user-
