@@ -34,7 +34,7 @@ public class launcherWindow extends javax.swing.JFrame {
         });
     }
     public launcherWindow() throws IOException, URISyntaxException {
-        this.setTitle("Caledonia 1.0.0 Launcher");
+        this.setTitle("Caledonia 1.0.2 Launcher");
         initComponents();
     }
 
@@ -258,8 +258,8 @@ public class launcherWindow extends javax.swing.JFrame {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Non-UI Variable Delcarations">
-    Boolean updateOverride = updateInterface.updateRequired("1.0.0");
-    Boolean isRecent = updateInterface.isRecent("1.0.0");
+    Boolean updateOverride = updateInterface.updateRequired("1.0.2");
+    static Boolean isRecent = updateInterface.isRecent("1.0.2");
     static ArrayList<String> APIErrors;
 
     static {
@@ -298,6 +298,7 @@ public class launcherWindow extends javax.swing.JFrame {
     public static String[] findErrors() throws IOException, URISyntaxException {
         ArrayList<String> errors = new ArrayList<String>();
 
+        if(!isRecent) errors.add("Update to " + updateInterface.getLatestUpdateVersion() + " - " + updateInterface.getLatestUpdateDescription());
         File data = new File("data/");
         if (data.exists()) {
             File[] filesInDirectory = data.listFiles();
