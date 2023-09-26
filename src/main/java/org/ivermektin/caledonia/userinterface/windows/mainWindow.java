@@ -42,7 +42,7 @@ public class mainWindow extends javax.swing.JFrame {
         });
     }
     public mainWindow() {
-        this.setTitle("Caledonia 1.0.0");
+        this.setTitle("Caledonia 1.0.2");
         initComponents();
     }
 
