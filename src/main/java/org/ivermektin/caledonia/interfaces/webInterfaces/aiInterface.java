@@ -30,6 +30,7 @@ public class aiInterface {
      */
     public static data generateReport(String prompt, ArrayList<data> notes, String courseName) throws IOException {
         String noteData = "";
+        prompt = hygieneInterface.stringSanitizer(prompt);
         for (data data: notes) {
             noteData += data.getTitle() + " at " + data.getDate() + "\\n" + data.getContent() + "\\n\\n";
         }
