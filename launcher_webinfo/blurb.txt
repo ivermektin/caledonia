@@ -1,1 +1,1 @@
-github.com/ivermektin/caledonia
+Using double-quotes in prompt causes errors. This will be patched in a later update.
