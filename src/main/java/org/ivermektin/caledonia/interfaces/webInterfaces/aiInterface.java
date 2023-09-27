@@ -50,6 +50,7 @@ public class aiInterface {
         String responseTXT = response.body().string();
         Gson JSONParser = new Gson();
         JsonObject responseJsonObject = new Gson().fromJson(responseTXT, JsonObject.class);
+        response.close();
         if(response.isSuccessful()){
             String content = responseJsonObject.get("choices").getAsJsonArray().get(0).getAsJsonObject().get("message").getAsJsonObject().get("content").getAsString();
             return content;
@@ -94,7 +95,6 @@ public class aiInterface {
                 .addHeader("Authorization", "Bearer " + apiKey)
                 .build();
         Response response = client.newCall(request).execute();
-        response.close();
         return response;
     }
 }
