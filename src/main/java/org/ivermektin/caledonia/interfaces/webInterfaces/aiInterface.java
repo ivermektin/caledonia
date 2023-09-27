@@ -94,6 +94,7 @@ public class aiInterface {
                 .addHeader("Authorization", "Bearer " + apiKey)
                 .build();
         Response response = client.newCall(request).execute();
+        response.close();
         return response;
     }
 }
