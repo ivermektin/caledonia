@@ -2,10 +2,9 @@ package org.ivermektin.caledonia.userinterface.windows;
 
 import com.formdev.flatlaf.intellijthemes.*;
 import com.google.gson.Gson;
-import org.ivermektin.caledonia.interfaces.systemInterfaces.filesystemInterface;
-import org.ivermektin.caledonia.interfaces.domesticInterfaces.objects.data;
-import org.ivermektin.caledonia.interfaces.domesticInterfaces.objects.subject;
-import org.ivermektin.caledonia.userinterface.launcher.launcherWindow;
+import org.ivermektin.caledonia.services.internalServices.objects.Data;
+import org.ivermektin.caledonia.services.internalServices.objects.Subject;
+import org.ivermektin.caledonia.services.systemServices.FilesystemService;
 import org.ivermektin.caledonia.userinterface.windows.control.windowController;
 import org.ivermektin.caledonia.userinterface.windows.dataWindows.newReportWindow;
 import org.ivermektin.caledonia.userinterface.windows.subjectWindows.createSubjectWindow;
@@ -20,9 +19,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 public class mainWindow extends javax.swing.JFrame {
 
@@ -57,7 +54,7 @@ public class mainWindow extends javax.swing.JFrame {
         setResizable(false);
         for (File folder: files) {
             String id = folder.getName();
-            subjects.add(subject.loadSubjectFromID(id));
+            subjects.add(Subject.loadSubjectFromID(id));
         }
 
         // Component Making Code
@@ -101,17 +98,7 @@ public class mainWindow extends javax.swing.JFrame {
         caledoniaLabel.setText("caledonia");
 
         subjectsList.setFont(new java.awt.Font("Bahnschrift", Font.PLAIN, 12)); // NOI18N
-        subjectsList.setModel(new javax.swing.AbstractListModel<>() {
-            final String[] strings = {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5"};
 
-            public int getSize() {
-                return strings.length;
-            }
-
-            public String getElementAt(int i) {
-                return strings[i];
-            }
-        });
         subjectsList.setName(""); // NOI18N
         subjectsListScrollPane.setViewportView(subjectsList);
 
@@ -147,17 +134,6 @@ public class mainWindow extends javax.swing.JFrame {
         notesLabel.setText("Notes");
 
         reportsList.setFont(new java.awt.Font("Bahnschrift", Font.PLAIN, 12)); // NOI18N
-        reportsList.setModel(new javax.swing.AbstractListModel<>() {
-            final String[] strings = {};
-
-            public int getSize() {
-                return strings.length;
-            }
-
-            public String getElementAt(int i) {
-                return strings[i];
-            }
-        });
 
         reportsListSP.setViewportView(reportsList);
 
@@ -185,17 +161,7 @@ public class mainWindow extends javax.swing.JFrame {
         reportDeleteButton.setToolTipText("Remove an old report.");
 
         notesList.setFont(new java.awt.Font("Bahnschrift", Font.PLAIN, 12)); // NOI18N
-        notesList.setModel(new javax.swing.AbstractListModel<>() {
-            final String[] strings = {};
 
-            public int getSize() {
-                return strings.length;
-            }
-
-            public String getElementAt(int i) {
-                return strings[i];
-            }
-        });
         notesListSP.setViewportView(notesList);
 
 
@@ -395,7 +361,7 @@ public class mainWindow extends javax.swing.JFrame {
         // Listener for the subjects list
         subjectsList.addListSelectionListener(update ->{
             Integer index = 0;
-            if(subjectsList.getSelectedIndex() != -1) windowController.setCurrentSubject(subjects.get(subjectsList.getSelectedIndex()));
+            if(subjectsList.getSelectedIndex() != -1) windowController.setCurrentSubject(subjectsList.getSelectedValue());
             updateSubject(windowController.getCurrentSubject());
         });
 
@@ -409,7 +375,7 @@ public class mainWindow extends javax.swing.JFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 Integer index = 0;
-                if(notesList.getSelectedIndex() != -1) windowController.setData(windowController.getCurrentSubject().getNotes().get(notesList.getSelectedIndex()));
+                if(notesList.getSelectedIndex() != -1) windowController.setData(notesList.getSelectedValue());
                 updateViewer(windowController.getData());
 
                 updateButtons();
@@ -441,7 +407,7 @@ public class mainWindow extends javax.swing.JFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 Integer index = 0;
-                if(reportsList.getSelectedIndex() != -1) windowController.setData(windowController.getCurrentSubject().getReports().get(reportsList.getSelectedIndex()));
+                if(reportsList.getSelectedIndex() != -1) windowController.setData(reportsList.getSelectedValue());
                 updateViewer(windowController.getData());
 
                 updateButtons();
@@ -466,7 +432,7 @@ public class mainWindow extends javax.swing.JFrame {
         // Listener for the reports list selection
         reportsList.addListSelectionListener(update ->{
             Integer index = 0;
-            if(reportsList.getSelectedIndex() != -1) windowController.setData(windowController.getCurrentSubject().getReports().get(reportsList.getSelectedIndex()));
+            if(reportsList.getSelectedIndex() != -1) windowController.setData(reportsList.getSelectedValue());
             updateViewer(windowController.getData());
         });
 
@@ -509,7 +475,7 @@ public class mainWindow extends javax.swing.JFrame {
             }
         });
 
-        // Listener for subject deletion button
+        // Listener for Subject deletion button
         deleteSubjectButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
@@ -520,7 +486,7 @@ public class mainWindow extends javax.swing.JFrame {
             }
         });
 
-        // Listener for editing subject data button
+        // Listener for editing Subject Data button
         editSubjectDataButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editSubjectDataButtonActionPerformed(evt);
@@ -535,7 +501,7 @@ public class mainWindow extends javax.swing.JFrame {
         });
 
         /* Subject Side Listeners */
-        // Listener for creating a new subject button
+        // Listener for creating a new Subject button
         createSubjectButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createSubjectButtonActionPerformed(evt);
@@ -549,8 +515,8 @@ public class mainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Listener Handler Functions">
 
     /**
-     * Event handler for the delete subject button. Removes the current subject from the list of subjects,
-     * deletes the subject file and waits until the file is deleted, then sets the first subject as the current subject,
+     * Event handler for the delete Subject button. Removes the current Subject from the list of subjects,
+     * deletes the Subject file and waits until the file is deleted, then sets the first Subject as the current Subject,
      * and updates the GUI.
      *
      * @param evt the ActionEvent object
@@ -585,7 +551,7 @@ public class mainWindow extends javax.swing.JFrame {
     }
 
     /**
-     * Handler for the create subject button. Opens a new window for creating a subject.
+     * Handler for the create Subject button. Opens a new window for creating a Subject.
      *
      * @param evt the ActionEvent object
      */
@@ -595,12 +561,12 @@ public class mainWindow extends javax.swing.JFrame {
 
     /**
      * Handler for the note delete button. Removes the selected note from the list of notes,
-     * removes the note from the current subject, updates the subject and viewer, and updates the buttons.
+     * removes the note from the current Subject, updates the Subject and viewer, and updates the buttons.
      *
      * @param evt the ActionEvent object
      */
     private void noteDeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        data note = notes.get(notesList.getSelectedIndex());
+        Data note = notesList.getSelectedValue();
         notes.remove(note);
         windowController.getCurrentSubject().removeNote(note);
         updateSubject(windowController.getCurrentSubject());
@@ -620,12 +586,12 @@ public class mainWindow extends javax.swing.JFrame {
 
     /**
      * Handler for the report delete button. Removes the selected report from the list of reports,
-     * removes the report from the current subject, updates the subject and viewer, and updates the buttons.
+     * removes the report from the current Subject, updates the Subject and viewer, and updates the buttons.
      *
      * @param evt the ActionEvent object
      */
     private void reportDeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        data report = reports.get(reportsList.getSelectedIndex());
+        Data report = reportsList.getSelectedValue();
         reports.remove(report);
         windowController.getCurrentSubject().removeReport(report);
         updateSubject(windowController.getCurrentSubject());
@@ -635,7 +601,7 @@ public class mainWindow extends javax.swing.JFrame {
     }
 
     /**
-     * Handler for the edit subject data button. Opens a new window for editing the current subject's data.
+     * Handler for the edit Subject Data button. Opens a new window for editing the current Subject's Data.
      *
      * @param evt the ActionEvent object
      */
@@ -644,8 +610,8 @@ public class mainWindow extends javax.swing.JFrame {
     }
 
     /**
-     * Handler for the export button. Allows the user to select a file to export the data to,
-     * and saves the data to the selected file. If the file is a text file, it opens the file in the default text editor.
+     * Handler for the export button. Allows the user to select a file to export the Data to,
+     * and saves the Data to the selected file. If the file is a text file, it opens the file in the default text editor.
      *
      * @param evt the ActionEvent object
      * @throws IOException if an I/O error occurs
@@ -661,7 +627,7 @@ public class mainWindow extends javax.swing.JFrame {
             String filepath = fileToSave.getAbsolutePath();
             if(!filepath.endsWith(".txt")) filepath += ".txt";
 
-            filesystemInterface.saveFile(filepath, generateArray(windowController.getData()));
+            FilesystemService.saveFile(filepath, generateArray(windowController.getData()));
 
             if(Desktop.isDesktopSupported()){
                 Desktop.getDesktop().edit(new File(filepath));
@@ -689,17 +655,17 @@ public class mainWindow extends javax.swing.JFrame {
     private javax.swing.JButton noteCreateButton;
     private javax.swing.JButton noteDeleteButton;
     private javax.swing.JLabel notesLabel;
-    private javax.swing.JList<String> notesList;
+    private javax.swing.JList<Data> notesList;
     private javax.swing.JScrollPane notesListSP;
     private javax.swing.JLabel referenceIDLabel;
     private javax.swing.JButton reportCreateButton;
     private javax.swing.JButton reportDeleteButton;
     private javax.swing.JLabel reportsLabel;
-    private javax.swing.JList<String> reportsList;
+    private javax.swing.JList<Data> reportsList;
     private javax.swing.JScrollPane reportsListSP;
     private javax.swing.JPanel subjectInfoPanel;
     private javax.swing.JLabel subjectsLabel;
-    private javax.swing.JList<String> subjectsList;
+    private javax.swing.JList<Subject> subjectsList;
     private javax.swing.JScrollPane subjectsListScrollPane;
     private javax.swing.JPanel viewerPanel;
     private javax.swing.JLabel viewerWindowLabel;
@@ -707,22 +673,22 @@ public class mainWindow extends javax.swing.JFrame {
 
     // <editor-fold defaultstate="collapsed" desc="Non-UI Variable Declarations">
     Gson JSONParser = new Gson();
-    ArrayList<subject> subjects = new ArrayList<subject>();
-    ArrayList<data> notes = new ArrayList<data>();
-    ArrayList<data> reports = new ArrayList<data>();
-    File[] files = new File("data/").listFiles();
+    ArrayList<Subject> subjects = new ArrayList<Subject>();
+    ArrayList<Data> notes = new ArrayList<Data>();
+    ArrayList<Data> reports = new ArrayList<Data>();
+    File[] files = new File("Data/").listFiles();
 
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Functions">
 
     /**
-     * Generates an ArrayList of strings representing a file containing the subject's data.
+     * Generates an ArrayList of strings representing a file containing the Subject's Data.
      *
-     * @param data The subject's data.
+     * @param data The Subject's Data.
      * @return The ArrayList of strings representing the file.
      */
-    public static ArrayList<String> generateArray(data data){
+    public static ArrayList<String> generateArray(Data data){
         ArrayList<String> file = new ArrayList<String>();
         file.add(data.getTitle());
         file.add(data.getAuthor() + " @ " + data.getDate());
@@ -737,10 +703,10 @@ public class mainWindow extends javax.swing.JFrame {
     public void populate(){
         if(subjects.isEmpty()){
             subjectInfoPanel.setVisible(false);
-            subjectsList.setModel(new javax.swing.AbstractListModel<String>() {
-                String[] strings = {};
-                public int getSize() { return strings.length; }
-                public String getElementAt(int i) { return strings[i]; }
+            subjectsList.setModel(new javax.swing.AbstractListModel<Subject>() {
+                Subject[] subjects = {};
+                public int getSize() { return subjects.length; }
+                public Subject getElementAt(int i) { return subjects[i]; }
             });
 
             this.setSize(new Dimension(170, 500));
@@ -763,15 +729,11 @@ public class mainWindow extends javax.swing.JFrame {
      * and populates a JList with the names as the elements.
      */
     public void loadSubjects(){
-        ArrayList<String> names = new ArrayList<String>();
-        for (subject subject : subjects){
-            names.add(subject.getName());
-        }
 
-        subjectsList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = names.toArray(new String[0]);
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        subjectsList.setModel(new javax.swing.AbstractListModel<Subject>() {
+            Subject[] data = subjects.toArray(new Subject[0]);
+            public int getSize() { return data.length; }
+            public Subject getElementAt(int i) { return data[i]; }
         });
     }
 
@@ -789,27 +751,17 @@ public class mainWindow extends javax.swing.JFrame {
 
 
     /**
-     * Updates the subject information displayed in the UI.
+     * Updates the Subject information displayed in the UI.
      *
-     * @param subject The subject object with updated information.
+     * @param subject The Subject object with updated information.
      */
-    public void updateSubject(subject subject){
+    public void updateSubject(Subject subject){
         nameLabel.setText(subject.getName());
         referenceIDLabel.setText("Reference ID: " + subject.getId());
-
-        ArrayList<String> notesTitles = new ArrayList<String>();
-        ArrayList<String> reportsTitles = new ArrayList<String>();
 
         // Load Titles
         notes = subject.getNotes();
         reports = subject.getReports();
-        for (data note: notes) {
-            notesTitles.add(note.getTitle());
-        }
-
-        for (data report: reports) {
-            reportsTitles.add(report.getTitle());
-        }
 
         noteDeleteButton.setEnabled(false);
         reportCreateButton.setEnabled(false);
@@ -832,26 +784,26 @@ public class mainWindow extends javax.swing.JFrame {
         }
 
 
-        notesList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = notesTitles.toArray(new String[0]);
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        notesList.setModel(new javax.swing.AbstractListModel<Data>() {
+            Data[] data = notes.toArray(new Data[0]);
+            public int getSize() { return data.length; }
+            public Data getElementAt(int i) { return data[i]; }
         });
 
-        reportsList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = reportsTitles.toArray(new String[0]);
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        reportsList.setModel(new javax.swing.AbstractListModel<Data>() {
+            Data[] data = reports.toArray(new Data[0]);
+            public int getSize() { return data.length; }
+            public Data getElementAt(int i) { return data[i]; }
         });
 
     }
 
     /**
-     * Updates the viewer with the given data.
+     * Updates the viewer with the given Data.
      *
-     * @param data The data object containing the information to be displayed in the viewer.
+     * @param data The Data object containing the information to be displayed in the viewer.
      */
-    public void updateViewer(data data){
+    public void updateViewer(Data data){
         entryTitleField.setText(data.getTitle());
         entryDateField.setText(data.getDate());
         entryContentField.setText(data.getContent());
