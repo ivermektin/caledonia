@@ -6,21 +6,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 
-/**
- * This class is the rawWebInterface.
- * It is used by the updateInterface and blurbInterface.
- * It uses Java's basic networking interface.
- */
-public class rawWebInterface {
-
-    /**
-     * This method is used to pull data from a specific website by
-     * taking in the URL as a parameter and returning an ArrayList
-     * of strings containing the data from the website.
-     * @param URL - the URL of the website to pull data from
-     * @return an ArrayList of strings containing the data from the website
-     * @throws IOException if an error occurs while reading the data from the website
-     */
+public class RawWebManager {
+    
     public static ArrayList<String> pullFromSite(String URL){
         ArrayList<String> data = new ArrayList<>();
         try {
