@@ -33,4 +33,9 @@ public class Data {
     public String getDate() {
         return date;
     }
+
+    @Override
+    public String toString(){
+        return title;
+    }
 }
