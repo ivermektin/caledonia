@@ -153,4 +153,9 @@ public class subject {
     public void setReports(ArrayList<data> reports) {
         this.reports = reports;
     }
+
+    @Override
+    public String toString(){
+        return getName();
+    }
 }
