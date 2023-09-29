@@ -1,6 +1,6 @@
 package org.ivermektin.caledonia.interfaces.webInterfaces;
 
-import org.ivermektin.caledonia.interfaces.webInterfaces.lowLevel.RawWebManager;
+import org.ivermektin.caledonia.interfaces.webInterfaces.lowLevel.RawWebService;
 
 import java.util.ArrayList;
 
