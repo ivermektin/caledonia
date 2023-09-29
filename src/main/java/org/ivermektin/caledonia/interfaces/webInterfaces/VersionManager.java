@@ -4,7 +4,7 @@ import org.ivermektin.caledonia.interfaces.webInterfaces.lowLevel.RawWebManager;
 
 import java.util.ArrayList;
 
-public class VersionManager extends RawWebManager {
+public class VersionManager extends RawWebService {
 
     private static String VERSION_INFO_URL = "https://raw.githubusercontent.com/ivermektin/caledonia/main/launcher_webinfo/versionInfo.txt";
     private static String DELIMITER = " : ";
