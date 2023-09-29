@@ -1,21 +1,10 @@
-package org.ivermektin.caledonia.interfaces.systemInterfaces;
+package org.ivermektin.caledonia.services.systemServices;
 
 import java.io.*;
 import java.util.ArrayList;
 
-/**
- * This class is the hygieneInterface.
- * It provides methods to read and save files.
- */
+public class FilesystemService {
 
-public class filesystemInterface {
-
-    /**
-     * Reads a file and returns its contents as an ArrayList of strings.
-     *
-     * @param filepath the path of the file to be read
-     * @return an ArrayList containing the lines of the file
-     */
     public static ArrayList<String> readFile(String filepath){
         ArrayList<String> temp = new ArrayList<>();
         try {
@@ -31,12 +20,6 @@ public class filesystemInterface {
         return temp;
     }
 
-    /**
-     * Saves the contents of an ArrayList into a file.
-     *
-     * @param filepath the path of the file to be saved
-     * @param temp the ArrayList containing the lines to be saved
-     */
     public static void saveFile(String filepath, ArrayList temp) {
         try {
             PrintWriter file = new PrintWriter(new FileWriter(filepath));
@@ -49,12 +32,6 @@ public class filesystemInterface {
         }
     }
 
-    /**
-     * Saves a string into a file.
-     *
-     * @param filepath the path of the file to be saved
-     * @param temp the string to be saved
-     */
     public static void saveString(String filepath, String temp) {
         try {
             PrintWriter file = new PrintWriter(new FileWriter(filepath));
