@@ -20,14 +20,6 @@ public class subject {
     ArrayList<data> notes;
     ArrayList<data> reports;
 
-
-    /**
-     * Constructs a subject object with the given name, ID, notes, and reports.
-     * @param name      the name of the subject
-     * @param id        the ID of the subject
-     * @param notes     the list of notes associated with the subject
-     * @param reports   the list of reports associated with the subject
-     */
     public subject(String name, String id, ArrayList<data> notes, ArrayList<data> reports){
         this.name = name;
         this.id = id;
@@ -35,32 +27,31 @@ public class subject {
         this.reports = reports;
     }
 
-    /**
-     * Saves the subject and its associated data to the filesystem.
-     * The subject is saved as a directory with the ID as the name.
-     * The subject's name is saved in a text file, and the notes and reports are saved as JSON files.
-     */
     public void saveSubject(){
-        Gson JSONParser = new Gson();
-
-        String filepath = "data/" + id;
-        String nfp = filepath + "/name.txt";
-        String ntfp = filepath + "/notes.json";
-        String rpfp = filepath + "/reports.json";
-
-        String notesJSON = JSONParser.toJson(new packagedData(notes));
-        String reportsJSON = JSONParser.toJson(new packagedData(reports));
-
-        filesystemInterface.saveString(nfp, name);
-        filesystemInterface.saveString(ntfp, notesJSON);
-        filesystemInterface.saveString(rpfp, reportsJSON);
+        saveName();
+        saveNotes();
+        saveReports();
     }
 
-    /**
-     * Loads a subject object from the filesystem using its ID.
-     * @param id    the ID of the subject to load
-     * @return      the loaded subject object
-     */
+    public void saveName(){
+        String nfp = "data/" + id + "/name.txt";
+        filesystemInterface.saveString(nfp, name);
+    }
+
+    public void saveNotes(){
+        Gson jsonParser = new Gson();
+        String filepath = "data/" + id + "/notes.json";
+        String notesJSON = jsonParser.toJson(new packagedData(notes));
+        filesystemInterface.saveString(filepath, notesJSON);
+    }
+
+    public void saveReports(){
+        Gson jsonParser = new Gson();
+        String filepath = "data/" + id + "/reports.json";
+        String reportsJSON = jsonParser.toJson(new packagedData(reports));
+        filesystemInterface.saveString(filepath, reportsJSON);
+    }
+
     public static subject loadSubjectFromID(String id){
         Gson JSONParser = new Gson();
 
@@ -79,9 +70,6 @@ public class subject {
         return new subject(name, id, notes.data, reports.data);
     }
 
-    /**
-     * Deletes the subject and its associated data from the filesystem.
-     */
     public void delete(){
         String filepath = "data/" + id;
         String nfp = filepath + "/name.txt";
@@ -94,142 +82,74 @@ public class subject {
         new File(filepath).delete();
     }
 
-    /**
-     * Adds a new note with the given title, author, and content to the subject.
-     * @param title     the title of the note
-     * @param author    the author of the note
-     * @param content   the content of the note
-     */
     public void addNote(String title, String author, String content){
         notes.add(new data(title, author, content));
-        saveSubject();
+        saveNotes();
     }
 
-    /**
-     * Adds a new note to the subject.
-     * @param data  the note to add
-     */
     public void addNote(data data){
         notes.add(data);
-        saveSubject();
+        saveNotes();
     }
 
-    /**
-     * Adds a new report with the given title and content to the subject.
-     * The report is assigned a default author of "Caledonia".
-     * @param title     the title of the report
-     * @param content   the content of the report
-     */
     public void addReport(String title, String content){
         reports.add(new data(title, "Caledonia", content));
-        saveSubject();
+        saveReports();
     }
 
-    /**
-     * Adds a new report to the subject.
-     * @param data  the report to add
-     */
     public void addReport(data data){
         reports.add(data);
-        saveSubject();
+        saveReports();
     }
 
-    /**
-     * Removes the note at the specified index from the subject.
-     * @param index the index of the note to remove
-     */
     public void removeNote(Integer index){
         notes.remove(index);
-        saveSubject();
+        saveNotes();
     }
 
-    /**
-     * Removes the specified note from the subject.
-     * @param note  the note to remove
-     */
     public void removeNote(data note){
         notes.remove(note);
         saveSubject();
     }
 
-    /**
-     * Removes the report at the specified index from the subject.
-     * @param index the index of the report to remove
-     */
     public void removeReport(Integer index){
         reports.remove(index);
         saveSubject();
     }
 
-    /**
-     * Removes the specified report from the subject.
-     * @param report    the report to remove
-     */
     public void removeReport(data report){
         reports.remove(report);
         saveSubject();
     }
 
-    /**
-     * Returns the ID of the subject.
-     * @return the ID of the subject
-     */
     public String getId() {
         return id;
     }
 
-    /**
-     * Returns the name of the subject.
-     * @return the name of the subject
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * Returns the list of notes associated with the subject.
-     * @return the list of notes associated with the subject
-     */
     public ArrayList<data> getNotes() {
-        return notes;
+        return new ArrayList<data>(notes);
     }
 
-    /**
-     * Returns the list of reports associated with the subject.
-     * @return the list of reports associated with the subject
-     */
     public ArrayList<data> getReports() {
-        return reports;
+        return new ArrayList<data>(reports);
     }
 
-    /**
-     * Sets the ID of the subject.
-     * @param id the ID of the subject
-     */
     public void setId(String id) {
         this.id = id;
     }
 
-    /**
-     * Sets the name of the subject.
-     * @param name the name of the subject
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * Sets the list of notes associated with the subject.
-     * @param notes the list of notes associated with the subject
-     */
     public void setNotes(ArrayList<data> notes) {
         this.notes = notes;
     }
 
-    /**
-     * Sets the list of reports associated with the subject.
-     * @param reports the list of reports associated with the subject
-     */
     public void setReports(ArrayList<data> reports) {
         this.reports = reports;
     }
