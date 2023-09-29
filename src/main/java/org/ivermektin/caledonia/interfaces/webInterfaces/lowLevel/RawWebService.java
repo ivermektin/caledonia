@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class RawWebManager {
+public class RawWebService {
     
     public static ArrayList<String> pullFromSite(String URL){
         ArrayList<String> data = new ArrayList<>();
