@@ -8,12 +8,6 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
-/**
- * This object class is subject.
- * A subject is identified by a unique ID and has a name.
- * It can have multiple notes and reports associated with it.
- */
-
 public class subject {
     String name;
     String id;
