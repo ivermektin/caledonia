@@ -1,17 +1,15 @@
 package org.ivermektin.caledonia.userinterface.windows.dataWindows;
 
-import org.ivermektin.caledonia.interfaces.webInterfaces.aiInterface;
-import org.ivermektin.caledonia.interfaces.domesticInterfaces.objects.data;
-import org.ivermektin.caledonia.interfaces.domesticInterfaces.objects.subject;
+import org.ivermektin.caledonia.services.internalServices.objects.Data;
+import org.ivermektin.caledonia.services.internalServices.objects.Subject;
+import org.ivermektin.caledonia.services.webServices.AIService;
 import org.ivermektin.caledonia.userinterface.windows.control.windowController;
 import org.ivermektin.caledonia.userinterface.windows.mainWindow;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 public class newReportWindow extends javax.swing.JDialog {
     public static void main() {
@@ -39,7 +37,7 @@ public class newReportWindow extends javax.swing.JDialog {
 
         createReportLabel = new javax.swing.JLabel();
         notesListSP = new javax.swing.JScrollPane();
-        notesList = new javax.swing.JList<>();
+        notesList = new JList<Data>();
         notesListLabel = new javax.swing.JLabel();
         promptField = new javax.swing.JTextField();
         createReportButton = new javax.swing.JButton();
@@ -51,17 +49,17 @@ public class newReportWindow extends javax.swing.JDialog {
         createReportLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         createReportLabel.setText("Create a Report");
 
-        ArrayList<data> notes = windowController.getCurrentSubject().getNotes();
-        ArrayList<String> noteNames = new ArrayList<String>();
-        for(data data: notes){
-            noteNames.add(data.getTitle());
-        }
+        ArrayList<Data> notes = windowController.getCurrentSubject().getNotes();
 
         notesList.setFont(new java.awt.Font("Bahnschrift", 0, 12)); // NOI18N
-        notesList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = noteNames.toArray(new String[0]);
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        notesList.setModel(new javax.swing.AbstractListModel<Data>() {
+            Data[] model = notes.toArray(new Data[0]);
+            public int getSize() { return model.length; }
+
+            @Override
+            public Data getElementAt(int index) {
+                return model[index];
+            }
         });
         notesListSP.setViewportView(notesList);
 
@@ -148,12 +146,8 @@ public class newReportWindow extends javax.swing.JDialog {
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                ArrayList<data> dataToSend = new ArrayList<data>();
-                for (Integer indice: notesList.getSelectedIndices()) {
-                    dataToSend.add(windowController.getCurrentSubject().getNotes().get(indice));
-                }
-                subject subject = windowController.getCurrentSubject();
-                subject.addReport(aiInterface.generateReport(promptField.getText(), dataToSend, windowController.getCurrentSubject().getName()));
+                Subject subject = windowController.getCurrentSubject();
+                subject.addReport(AIService.generateReport(promptField.getText(), (ArrayList<Data>) notesList.getSelectedValuesList(), windowController.getCurrentSubject().getName()));
 
                 return null;
             }
@@ -177,7 +171,7 @@ public class newReportWindow extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="UI Element Declarations">
     private javax.swing.JButton createReportButton;
     private javax.swing.JLabel createReportLabel;
-    private javax.swing.JList<String> notesList;
+    private JList<Data> notesList;
     private javax.swing.JLabel notesListLabel;
     private javax.swing.JScrollPane notesListSP;
     private javax.swing.JTextField promptField;
@@ -196,7 +190,7 @@ public class newReportWindow extends javax.swing.JDialog {
             message = "You must select one or more notes!";
         }
 
-        ArrayList<data> dataToSend = new ArrayList<data>();
+        ArrayList<Data> dataToSend = new ArrayList<Data>();
         for (Integer indice: notesList.getSelectedIndices()) {
             dataToSend.add(windowController.getCurrentSubject().getNotes().get(indice));
         }
@@ -210,12 +204,12 @@ public class newReportWindow extends javax.swing.JDialog {
         createReportButton.setToolTipText(message);
     }
 
-    public static boolean isGoodTokenwise(String prompt, ArrayList<data> notes){
+    public static boolean isGoodTokenwise(String prompt, ArrayList<Data> notes){
         String str = prompt;
-        for (data note: notes) {
+        for (Data note: notes) {
             str += note.getTitle() + note.getContent();
         }
-        return str.length() < 6400;
+        return str.length() < 25600;
     }
     // </editor-fold>
 

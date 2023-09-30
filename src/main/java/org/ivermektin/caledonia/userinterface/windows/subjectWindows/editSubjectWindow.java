@@ -1,6 +1,6 @@
 package org.ivermektin.caledonia.userinterface.windows.subjectWindows;
 
-import org.ivermektin.caledonia.interfaces.domesticInterfaces.objects.subject;
+import org.ivermektin.caledonia.services.internalServices.objects.Subject;
 import org.ivermektin.caledonia.userinterface.windows.mainWindow;
 import org.ivermektin.caledonia.userinterface.windows.control.windowController;
 
@@ -105,7 +105,7 @@ public class editSubjectWindow extends javax.swing.JDialog {
 
     // <editor-fold defaultstate="collapsed" desc="UI Handler Functions">
     private void editButtonActionPerformed() {
-        subject subject = windowController.getCurrentSubject();
+        Subject subject = windowController.getCurrentSubject();
         subject.setName(nameField.getText());
         subject.saveSubject();
         super.dispose();
@@ -127,7 +127,7 @@ public class editSubjectWindow extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Functions">
     private void checkStatus() {
         if(nameField.getText().isBlank()){
-            editButton.setToolTipText("You must give your subject a name!");
+            editButton.setToolTipText("You must give your Subject a name!");
             editButton.setEnabled(false);
         }
         else editButton.setEnabled(true);

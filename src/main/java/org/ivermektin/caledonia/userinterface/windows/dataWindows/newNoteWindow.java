@@ -1,6 +1,6 @@
 package org.ivermektin.caledonia.userinterface.windows.dataWindows;
 
-import org.ivermektin.caledonia.interfaces.domesticInterfaces.objects.subject;
+import org.ivermektin.caledonia.services.internalServices.objects.Subject;
 import org.ivermektin.caledonia.userinterface.windows.control.windowController;
 import org.ivermektin.caledonia.userinterface.windows.mainWindow;
 
@@ -127,7 +127,7 @@ public class newNoteWindow extends javax.swing.JDialog {
 
     // <editor-fold defaultstate="collapsed" desc="UI Handler Code">
     private void createNoteButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        subject subject = windowController.getCurrentSubject();
+        Subject subject = windowController.getCurrentSubject();
         subject.addNote(titleField.getText(), "User", contentField.getText());
         super.dispose();
         String[] args = {""};

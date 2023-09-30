@@ -1,32 +1,19 @@
-package org.ivermektin.caledonia.interfaces.domesticInterfaces;
+package org.ivermektin.caledonia.services.internalServices;
 
 import java.security.SecureRandom;
 import java.util.Random;
 
 /**
- * This class is the idInterface.
+ * This class is the IDGenerator.
  * This is used by the program to generate random codes for each class.
  * Because user input can sometimes have unusual characters, classes
  * are identified by the system by their ID, which is assigned here.
  */
 
-public class idInterface {
+public class IDGenerator {
 
-    /**
-     * The characters from which the random string will be generated.
-     */
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789";
-
-    /**
-     * The length of the random string.
-     */
     private static final int LENGTH = 5;
-
-    /**
-     * Generates a random string.
-     *
-     * @return the generated random string
-     */
     public static String generateRandomString() {
         StringBuilder sb = new StringBuilder(LENGTH);
         Random random = new SecureRandom();
@@ -40,12 +27,6 @@ public class idInterface {
         return sb.toString();
     }
 
-    /**
-     * Generates a random string of specified length.
-     *
-     * @param length the length of the random string to generate
-     * @return the generated random string
-     */
     public static String generateRandomString(Integer length) {
         StringBuilder sb = new StringBuilder(length);
         Random random = new SecureRandom();

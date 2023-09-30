@@ -2,10 +2,10 @@ package org.ivermektin.caledonia.userinterface.launcher;
 
 import com.formdev.flatlaf.intellijthemes.FlatArcIJTheme;
 import okhttp3.Response;
-import org.ivermektin.caledonia.interfaces.systemInterfaces.filesystemInterface;
-import org.ivermektin.caledonia.interfaces.webInterfaces.aiInterface;
-import org.ivermektin.caledonia.interfaces.webInterfaces.blurbInterface;
-import org.ivermektin.caledonia.interfaces.webInterfaces.updateInterface;
+import org.ivermektin.caledonia.services.systemServices.FilesystemService;
+import org.ivermektin.caledonia.services.webServices.AIService;
+import org.ivermektin.caledonia.services.webServices.BlurbService;
+import org.ivermektin.caledonia.services.webServices.VersionService;
 import org.ivermektin.caledonia.userinterface.windows.mainWindow;
 
 import java.awt.*;
@@ -34,7 +34,7 @@ public class launcherWindow extends javax.swing.JFrame {
         });
     }
     public launcherWindow() throws IOException, URISyntaxException {
-        this.setTitle("Caledonia 1.0.2 Launcher");
+        this.setTitle("CaledoniaVERSIONLauncher");
         initComponents();
     }
 
@@ -67,7 +67,7 @@ public class launcherWindow extends javax.swing.JFrame {
 
         websiteLabel.setFont(new java.awt.Font("Bahnschrift", Font.PLAIN, 12)); // NOI18N
         websiteLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        websiteLabel.setText(blurbInterface.getBlurb());
+        websiteLabel.setText(BlurbService.getBlurb());
 
         warningErrorWidgetLabel.setFont(new java.awt.Font("Bahnschrift", Font.PLAIN, 12)); // NOI18N
         warningErrorWidgetLabel.setText("Notices");
@@ -129,7 +129,7 @@ public class launcherWindow extends javax.swing.JFrame {
         noticeListSP.setViewportView(noticeList);
 
         String updateTooltip = "Your version of Caledonia is already up to date!";
-        if(!isRecent) updateTooltip = ("Update to " + updateInterface.getLatestUpdateVersion() + " - " + updateInterface.getLatestUpdateDescription());
+        if(!isRecent) updateTooltip = ("Update to " + VersionService.getLatestUpdateVersion() + " - " + VersionService.getLatestUpdateDescription());
 
         updateCaledoniaButton.setFont(new java.awt.Font("Bahnschrift", Font.PLAIN, 12)); // NOI18N
         updateCaledoniaButton.setText("Update Caledonia");
@@ -229,7 +229,7 @@ public class launcherWindow extends javax.swing.JFrame {
 
     // <editor-fold defaultstate="collapsed" desc="UI Handler Functions">
     private void updateCaledoniaButtonActionPerformed(java.awt.event.ActionEvent evt) throws IOException {
-        String url = "https://github.com/ivermektin/caledonia/releases/tag/v" + updateInterface.getLatestUpdateVersion();
+        String url = "https://github.com/ivermektin/caledonia/releases/tag/v" + VersionService.getLatestUpdateVersion();
         Desktop.getDesktop().browse(URI.create(url));
     }
 
@@ -258,9 +258,11 @@ public class launcherWindow extends javax.swing.JFrame {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Non-UI Variable Delcarations">
-    Boolean updateOverride = updateInterface.updateRequired("1.0.2");
-    static Boolean isRecent = updateInterface.isRecent("1.0.2");
+    static String VERSION = "1.0.3";
+    Boolean updateOverride = VersionService.updateRequired(VERSION);
+    static Boolean isRecent = VersionService.isRecent(VERSION);
     static ArrayList<String> APIErrors;
+    
 
     static {
         try {
@@ -298,13 +300,13 @@ public class launcherWindow extends javax.swing.JFrame {
     public static String[] findErrors() throws IOException, URISyntaxException {
         ArrayList<String> errors = new ArrayList<String>();
 
-        if(!isRecent) errors.add("Update to " + updateInterface.getLatestUpdateVersion() + " - " + updateInterface.getLatestUpdateDescription());
-        File data = new File("data/");
+        if(!isRecent) errors.add("Update to " + VersionService.getLatestUpdateVersion() + " - " + VersionService.getLatestUpdateDescription());
+        File data = new File("Data/");
         if (data.exists()) {
             File[] filesInDirectory = data.listFiles();
             for (File element : filesInDirectory) {
                 if (!element.isDirectory()) {
-                    errors.add("[FATAL] Unknown file " + element.getName() + " in data/. Remove file.");
+                    errors.add("[FATAL] Unknown file " + element.getName() + " in Data/. Remove file.");
                 } else {
                     if(!Arrays.stream(element.list()).anyMatch("name.txt"::equals)) errors.add("[FATAL] Missing name.txt file in " + element.getPath() + ". Restore name.txt or remove course.");
                     if(!Arrays.stream(element.list()).anyMatch("notes.json"::equals)) errors.add("[FATAL] Missing notes.json file in " + element.getPath() + ". Restore notes.json or remove course.");
@@ -315,7 +317,7 @@ public class launcherWindow extends javax.swing.JFrame {
                 }
             }
         } else {
-            errors.add("[FATAL] Missing data/ directory. Create data/ directory.");
+            errors.add("[FATAL] Missing Data/ directory. Create Data/ directory.");
         }
 
         errors.addAll(APIErrors);
@@ -327,10 +329,10 @@ public class launcherWindow extends javax.swing.JFrame {
         ArrayList<String> errors = new ArrayList<String>();
         File apiKey = new File("apikey.txt");
         if(apiKey.exists()){
-            String apikey = filesystemInterface.readFile(apiKey.getPath()).get(0);
-            Response response = aiInterface.makeRequest("N/A", "N/A");
+            String apikey = FilesystemService.readFile(apiKey.getPath()).get(0);
+            Response response = AIService.makeRequest("N/A", "N/A");
             if(!response.isSuccessful()){
-                errors.add("[WARN] OpenAI returned " + aiInterface.getContent(response) + ". This will be displayed when a report is made if not addressed.");
+                errors.add("[WARN] OpenAI returned " + AIService.getContent(response) + ". This will be displayed when a report is made if not addressed.");
             }
         } else errors.add("[CRITICAL] Missing file apikey.txt. Program will crash when a request to generate a report is made.");
         return errors;
