@@ -26,6 +26,7 @@ An OpenAI API key. You can read more about getting your key [here](https://help.
 ## Issues
 
 Working Directory Mismatch on macOS - [**Fix**](https://github.com/ivermektin/caledonia/issues/2#issuecomment-1736093737)
+**atrocious code for the view controller jesus christ** - did not know something i should've known about the JList when making it
 
 ## Feedback
 
